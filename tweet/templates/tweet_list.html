@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+Lets learn Django
+{% endblock %}
+
+
+{% block content %}
+
+<h1 class="text-center mt-2">Tweet List</h1>
+
+<a class="btn btn-primary mb-3" href="{% url 'tweet_create' %}">Create a Tweet</a>
+
+<div class="container row gap-3">
+    {% for tweet in tweets %}
+    <div class="card pt-3" style="width: 19rem;">
+        <img src="{{tweet.photo.url}}" class="card-img-top lh-base" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{tweet.text}}</h5>
+            <p class="card-text">created by - {{tweet.user.username}}</p>
+
+            {% if tweet.user == user %}
+                <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger">Delete</a>
+            {% endif %}
+
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

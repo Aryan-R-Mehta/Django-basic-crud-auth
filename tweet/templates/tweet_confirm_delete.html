@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Lets learn Django
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Are you sure you want to delete this tweet ?? </h1>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <button class="btn btn-danger">Delete</button>
+    <a href="{% url 'tweet_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% include 'layout.html' %}
+
+
+{% block content %}
+<div class="d-flex flex-column align-items-center justify-content-center">
+    <h2>Login Form</h2>
+    <form method="post" class="d-flex flex-column align-items-center my-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary">Login</button>
+    </form>
+    <p>
+        Dont have an account? <a href="{% url 'register' %}">Register</a>
+    </p>
+</div>
+{% endblock content %}
