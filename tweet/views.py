@@ -11,8 +11,11 @@ def index(request):
     return render(request, 'index.html')
 
 def tweet_list(request):
+    query = request.GET.get('q', '')
     tweets = Tweet.objects.all().order_by('-created_at')
-    return render(request, 'tweet_list.html', {"tweets": tweets})
+    if query:
+        tweets = tweets.filter(text__icontains=query)
+    return render(request, 'tweet_list.html', {"tweets": tweets, "query": query})
 
 @login_required
 def tweet_create(request):

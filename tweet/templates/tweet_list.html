@@ -1,34 +1,69 @@
 {% extends "layout.html" %}
 
-
 {% block title %}
 Lets learn Django
 {% endblock %}
 
-
 {% block content %}
 
-<h1 class="text-center mt-2">Tweet List</h1>
+<h1 class="text-center mt-3 mb-4">Tweet List</h1>
 
-<a class="btn btn-primary mb-3" href="{% url 'tweet_create' %}">Create a Tweet</a>
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <a class="btn btn-primary" href="{% url 'tweet_create' %}">
+        Create a Tweet
+    </a>
 
-<div class="container row gap-3">
+    <form class="d-flex" method="GET" action="{% url 'tweet_list' %}">
+        <input class="form-control me-2"
+               type="search"
+               name="q"
+               placeholder="Search tweets"
+               value="{{ query }}">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+</div>
+
+
+<h4 class="mb-3">My Tweets</h4>
+<div class="container row gap-3 mb-3">
     {% for tweet in tweets %}
-    <div class="card pt-3" style="width: 19rem;">
-        <img src="{{tweet.photo.url}}" class="card-img-top lh-base" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">{{tweet.text}}</h5>
-            <p class="card-text">created by - {{tweet.user.username}}</p>
-
-            {% if tweet.user == user %}
+        {% if tweet.user == request.user %}
+        <div class="card pt-3" style="width:19rem;">
+            <img src="{{ tweet.photo.url }}" class="card-img-top" alt="">
+            <div class="card-body">
+                <h5 class="card-title">{{ tweet.text }}</h5>
+                <p class="card-text">
+                    created by - {{ tweet.user.username }}
+                </p>
                 <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-primary">Edit</a>
                 <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger">Delete</a>
-            {% endif %}
-
+            </div>
         </div>
-    </div>
+        {% endif %}
+    {% empty %}
+        <p>No tweets yet.</p>
     {% endfor %}
+</div>
 
+
+
+<h4 class="mb-3">Other Tweets</h4>
+<div class="container row gap-3 mb-4">
+    {% for tweet in tweets %}
+        {% if tweet.user != request.user %}
+        <div class="card pt-3" style="width:19rem;">
+            <img src="{{ tweet.photo.url }}" class="card-img-top" alt="">
+            <div class="card-body">
+                <h5 class="card-title">{{ tweet.text }}</h5>
+                <p class="card-text">
+                    created by - {{ tweet.user.username }}
+                </p>
+            </div>
+        </div>
+        {% endif %}
+    {% empty %}
+        <p>No tweets found.</p>
+    {% endfor %}
 </div>
 
 {% endblock %}
